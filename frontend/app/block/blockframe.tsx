@@ -270,14 +270,14 @@ const BlockFrame_Header = ({
                 <div className="block-frame-view-type">{viewName}</div>
                 {showBlockIds && <div className="block-frame-blockid">[{nodeModel.blockId.substring(0, 8)}]</div>}
             </div>
-            {manageConnection && (
+            {/* {manageConnection && (
                 <ConnectionButton
                     ref={connBtnRef}
                     key="connbutton"
                     connection={blockData?.meta?.connection}
                     changeConnModalAtom={changeConnModalAtom}
                 />
-            )}
+            )} */}
             {showNoWshButton && <IconButton decl={wshInstallButton} className="block-frame-header-iconbutton" />}
             <div className="block-frame-textelems-wrapper">{headerTextElems}</div>
             <div className="block-frame-end-icons">{endIconsElem}</div>

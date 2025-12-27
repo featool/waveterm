@@ -217,7 +217,7 @@ export class PreviewModel implements ViewModel {
             const blockData = get(this.blockAtom);
             return blockData?.meta?.edit ?? false;
         });
-        this.viewName = atom("Preview");
+        this.viewName = atom("PythonViewer");
         this.viewText = atom((get) => {
             let headerPath = get(this.metaFilePath);
             const connStatus = get(this.connStatus);
@@ -233,6 +233,7 @@ export class PreviewModel implements ViewModel {
             const loadableSV = get(this.loadableSpecializedView);
             const isCeView = loadableSV.state == "hasData" && loadableSV.data.specializedView == "codeedit";
             const loadableFileInfo = get(this.loadableFileInfo);
+			console.log(loadableFileInfo)
             if (loadableFileInfo.state == "hasData") {
                 headerPath = loadableFileInfo.data?.path;
                 if (headerPath == "~") {
@@ -256,6 +257,7 @@ export class PreviewModel implements ViewModel {
                 saveClassName = "green";
             }
             if (isCeView) {
+				console.log("DDDDDD  " + isCeView)
                 const fileInfo = globalStore.get(this.loadableFileInfo);
                 if (fileInfo.state != "hasData") {
                     viewTextChildren.push({
@@ -295,6 +297,7 @@ export class PreviewModel implements ViewModel {
                     onClick: () => fireAndForget(() => this.setEditMode(true)),
                 });
             }
+
             return [
                 {
                     elemtype: "div",
