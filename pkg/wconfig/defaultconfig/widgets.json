@@ -1,15 +1,4 @@
 {
-    "defwidget@terminal": {
-        "display:order": -5,
-        "icon": "square-terminal",
-        "label": "terminal",
-        "blockdef": {
-            "meta": {
-                "view": "term",
-                "controller": "shell"
-            }
-        }
-    },
     "defwidget@files": {
         "display:order": -4,
         "icon": "folder",
@@ -28,26 +17,6 @@
         "blockdef": {
             "meta": {
                 "view": "web"
-            }
-        }
-    },
-    "defwidget@ai": {
-        "display:order": -2,
-        "icon": "sparkles",
-        "label": "ai",
-        "blockdef": {
-            "meta": {
-                "view": "waveai"
-            }
-        }
-    },
-    "defwidget@sysinfo": {
-        "display:order": -1,
-        "icon": "chart-line",
-        "label": "sysinfo",
-        "blockdef": {
-            "meta": {
-                "view": "sysinfo"
             }
         }
     }

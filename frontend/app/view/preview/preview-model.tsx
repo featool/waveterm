@@ -280,6 +280,13 @@ export class PreviewModel implements ViewModel {
                         className: clsx(`${saveClassName} rounded-[4px] !py-[2px] !px-[10px] text-[11px] font-[500]`),
                         onClick: () => fireAndForget(this.handleFileSave.bind(this)),
                     });
+
+					viewTextChildren.push({
+                        elemtype: "textbutton",
+                        text: "Executor",
+                        className: clsx(`${saveClassName} rounded-[4px] !py-[2px] !px-[10px] text-[11px] font-[500]`),
+                        onClick: () => fireAndForget(this.handleFileSave.bind(this)),
+                    });
                 }
                 if (get(this.canPreview)) {
                     viewTextChildren.push({

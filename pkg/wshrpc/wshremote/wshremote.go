@@ -89,9 +89,20 @@ func parseByteRange(rangeStr string) (ByteRangeType, error) {
 
 func (impl *ServerImpl) remoteStreamFileDir(ctx context.Context, path string, byteRange ByteRangeType, dataCallback func(fileInfo []*wshrpc.FileInfo, data []byte, byteRange ByteRangeType)) error {
 	innerFilesEntries, err := os.ReadDir(path)
+	log.Printf("path = %q\n", path)
 	if err != nil {
 		return fmt.Errorf("cannot open dir %q: %w", path, err)
 	}
+
+	// 过滤非Python文件，只保留目录和.py文件
+	var filteredEntries []os.DirEntry
+	for _, entry := range innerFilesEntries {
+		if entry.IsDir() || strings.HasSuffix(strings.ToLower(entry.Name()), ".py") {
+			filteredEntries = append(filteredEntries, entry)
+		}
+	}
+	innerFilesEntries = filteredEntries
+
 	if byteRange.All {
 		if len(innerFilesEntries) > wshrpc.MaxDirSize {
 			innerFilesEntries = innerFilesEntries[:wshrpc.MaxDirSize]
@@ -187,8 +198,15 @@ func (impl *ServerImpl) remoteStreamFileInternal(ctx context.Context, data wshrp
 		return nil
 	}
 	if finfo.IsDir {
+		// 读取文件夹
 		return impl.remoteStreamFileDir(ctx, path, byteRange, dataCallback)
 	} else {
+		// 检查是否为Python文件
+		if !strings.HasSuffix(strings.ToLower(path), ".py") {
+			return fmt.Errorf("file %q is not a Python file", path)
+		}
+
+		// 读取文件内容
 		return impl.remoteStreamFileRegular(ctx, path, byteRange, dataCallback)
 	}
 }
@@ -552,6 +570,10 @@ func (impl *ServerImpl) RemoteListEntriesCommand(ctx context.Context, data wshrp
 			if ctx.Err() != nil {
 				ch <- wshutil.RespErr[wshrpc.CommandRemoteListEntriesRtnData](ctx.Err())
 				return
+			}
+			// 如果是文件但不是Python文件，则跳过
+			if !innerFileEntry.IsDir() && !strings.HasSuffix(strings.ToLower(innerFileEntry.Name()), ".py") {
+				continue
 			}
 			innerFileInfoInt, err := innerFileEntry.Info()
 			if err != nil {

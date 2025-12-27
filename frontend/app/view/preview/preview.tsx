@@ -23,10 +23,7 @@ export type SpecializedViewProps = {
 };
 
 const SpecializedViewMap: { [view: string]: ({ model }: SpecializedViewProps) => React.JSX.Element } = {
-    streaming: StreamingPreview,
-    markdown: MarkdownPreview,
     codeedit: CodeEditPreview,
-    csv: CSVViewPreview,
     directory: DirectoryPreview,
 };
 
